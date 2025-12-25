@@ -1,103 +1,67 @@
-# PDF-Summarizer-and-Q-A-Bot
-Built an AI-based PDF Summarizer and Q&amp;A Bot using NLP and transformer models to extract insights and answer user queries from documents.
+# PDF Summarizer & Q/A Bot (Streamlit)
 
-# 📄 PDF Summarizer & Q&A Bot
+A lightweight, local Python app that lets you:
+1. **Upload a text-based PDF**
+2. **Summarize** the document (unsupervised LexRank – fast & no GPU required)
+3. **Generate quiz questions** automatically (heuristics-based, no big ML downloads)
+4. **Ask questions** like a chatbot using simple retrieval over the document
 
-An AI-powered application that summarizes PDF documents and allows users to ask questions based on the document content using Natural Language Processing (NLP).
-
----
-
-## 🚀 Features
-
-- 📂 Upload PDF documents
-- 🧠 Automatic text extraction from PDFs
-- ✍️ Generate concise summaries
-- ❓ Ask questions and get accurate answers from the document
-- ⚡ Fast and user-friendly interface
+> **Note**: Works best for text-based PDFs. For scanned PDFs, run OCR first (e.g., Tesseract or Adobe).
 
 ---
 
-## 🛠️ Tech Stack
+## 🧰 1) Install
 
-- **Programming Language:** Python  
-- **NLP & AI:** Transformers / LLMs  
-- **Libraries:**  
-  - PyPDF / PDFPlumber  
-  - LangChain  
-  - OpenAI API / HuggingFace  
-- **Frontend:** Streamlit / Flask  
-- **Version Control:** Git & GitHub  
+Create a virtual environment (recommended) and install dependencies:
 
----
-
-## 📁 Project Structure
-
-pdf_summarizer_qabot/
-│
-├── app.py # Main application file
-├── requirements.txt # Project dependencies
-├── README.md # Project documentation
-├── utils/
-│ ├── pdf_loader.py # PDF text extraction
-│ ├── summarizer.py # Text summarization logic
-│ └── qa_bot.py # Question-answering logic
-├── data/
-│ └── sample.pdf # Sample PDF files
-└── assets/
-└── screenshots/ # UI screenshots
-
-
-
----
-
-## ⚙️ Installation & Setup
-
-1. **Clone the repository**
-bash
-git clone https://github.com/your-username/pdf_summarizer_qabot.git
-cd pdf_summarizer_qabot
-
-2.Create virtual environment (optional but recommended)
-
-python -m venv venv
-source venv/bin/activate  # For Windows: venv\Scripts\activate
-
-3.Install dependencies
-
+```bash
+# Windows (PowerShell)
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
+```
 
-4.Run the application
+If NLTK downloads its small tokenizers on first run, allow it (the app tries to auto-download if missing).
 
-python app.py
+---
 
+## ▶️ 2) Run the App
 
-or (if Streamlit)
-
+```bash
 streamlit run app.py
+```
 
+Then open the URL shown in the terminal (usually http://localhost:8501).
 
-🧪 How It Works
+---
 
-User uploads a PDF file
+## 🗂 3) Project Structure
 
-Text is extracted and processed
+```
+.
+├─ app.py          # Streamlit UI
+├─ utils.py        # Text extraction, summarization, QG, simple QA
+├─ requirements.txt
+└─ README.md
+```
 
-Summary is generated using NLP models
+---
 
-User asks questions
+## 💡 Tips / Common Issues
 
-AI retrieves relevant context and provides answers
+- **Tkinter errors?** This app uses Streamlit instead, so you don't need Tkinter.
+- **Torch/Transformers too heavy?** Not used here. The summarizer is LexRank (Sumy) and the QA is TF‑IDF based.
+- **Scanned PDFs** need OCR first.
+- If you see an NLTK resource error, run:
+  ```python
+  import nltk
+  nltk.download("punkt"); nltk.download("stopwords"); nltk.download("averaged_perceptron_tagger")
+  ```
 
-📸 Screenshots
+---
 
-Add screenshots of your UI here
+## 🧪 Extending (Optional)
 
-🔮 Future Enhancements
-
-Support for multiple PDFs
-
-Improved summarization accuracy
-
-Chat history feature
-
-Deployment on cloud (AWS / Azure / Render)
+- Swap LexRank with modern summarizers using `transformers` (e.g., `facebook/bart-large-cnn`) if you have PyTorch installed.
+- Replace heuristic QG with a T5-based question generator model.
+- Add document chunking + embeddings (e.g., `sentence-transformers`) for better answers on long PDFs.
